@@ -8,4 +8,7 @@ export default styled.div`
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-left: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
