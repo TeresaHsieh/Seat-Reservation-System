@@ -6,16 +6,19 @@ import { Outer, Inner } from './App.style';
 const App = () => {
   const [selectedAuditorium, setSelectedAuditorium] = useState(null);
   const [seatsStatus, setSeatsStatus] = useState([]);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
   useEffect(() => {
     if (selectedAuditorium === null) {
       return;
     }
+    setIsLoadingData(true);
     fetch(`http://localhost:8000/${selectedAuditorium}`)
       .then((response) => response.json())
       .then((data) => {
         setSeatsStatus(data?.seatsStatus);
+        setIsLoadingData(false);
       });
   }, [selectedAuditorium]);
 
@@ -24,6 +27,7 @@ const App = () => {
       <Inner>
         <Select handleClick={setSelectedAuditorium} />
         <SeatingPlan
+          isLoadingData={isLoadingData}
           seatsStatus={seatsStatus}
           selectedSeats={selectedSeats}
           setSelectedSeats={setSelectedSeats}

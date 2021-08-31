@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import Loader from '../Loader';
 import Seat from './Seat';
 import Container from './SeatingPlan.style';
 
 const convertCoordinate = (rowIndex, columnIndex) =>
   `${String.fromCharCode(rowIndex + 1 + 65)}${columnIndex + 1}`;
 
-const SeatingPlan = ({ seatsStatus, selectedSeats, setSelectedSeats }) => {
+const SeatingPlan = ({
+  isLoadingData,
+  seatsStatus,
+  selectedSeats,
+  setSelectedSeats
+}) => {
   const clickSeat = (name) => {
     if (selectedSeats.includes(name)) {
       setSelectedSeats(selectedSeats.filter((value) => value !== name));
@@ -16,6 +22,13 @@ const SeatingPlan = ({ seatsStatus, selectedSeats, setSelectedSeats }) => {
     setSelectedSeats([...selectedSeats, name]);
   };
 
+  if (isLoadingData) {
+    return (
+      <Container>
+        <Loader />
+      </Container>
+    );
+  }
   if (seatsStatus.length > 0) {
     return (
       <Container>
@@ -45,9 +58,7 @@ const SeatingPlan = ({ seatsStatus, selectedSeats, setSelectedSeats }) => {
                             convertCoordinate(rowIndex, columnIndex)
                           )}
                           handleClick={() =>
-                            clickSeat(
-                              convertCoordinate(rowIndex, columnIndex)
-                            )
+                            clickSeat(convertCoordinate(rowIndex, columnIndex))
                           }
                         />
                       </td>
@@ -66,6 +77,7 @@ const SeatingPlan = ({ seatsStatus, selectedSeats, setSelectedSeats }) => {
 };
 
 SeatingPlan.propTypes = {
+  isLoadingData: PropTypes.bool.isRequired,
   seatsStatus: PropTypes.arrayOf(PropTypes.array),
   selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired,
   setSelectedSeats: PropTypes.func.isRequired
