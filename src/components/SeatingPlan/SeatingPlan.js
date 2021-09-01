@@ -1,16 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import humanizeCoordinate from '../../utils/humanizeCoordinate';
+import Subtitle from './Subtitle';
+import Table from './Table';
 import Seat from './Seat';
-import {
-  Container,
-  Title,
-  Subtitle,
-  TableContainer,
-  Hint,
-  Button
-} from './SeatingPlan.style';
+import { Container, Title, Hint, HintText, Button } from './SeatingPlan.style';
 
 const SeatingPlan = ({
   selectedAuditorium,
@@ -19,106 +12,25 @@ const SeatingPlan = ({
   setSelectedSeats,
   handleSubmit
 }) => {
-  const clickSeat = (rowIndex, columnIndex) => {
-    if (
-      selectedSeats.some(
-        (element) =>
-          element.path === humanizeCoordinate({ rowIndex, columnIndex })
-      )
-    ) {
-      setSelectedSeats(
-        selectedSeats.filter(
-          (element) =>
-            element.path !== humanizeCoordinate({ rowIndex, columnIndex })
-        )
-      );
-      return;
-    }
-    setSelectedSeats([
-      ...selectedSeats,
-      {
-        path: humanizeCoordinate({ rowIndex, columnIndex }),
-        coordinate: [rowIndex, columnIndex]
-      }
-    ]);
-  };
-
   if (seatsStatus.length > 0) {
     return (
       <Container>
         <Title>{selectedAuditorium} 廳</Title>
-        {selectedSeats.length > 0 ? (
-          <Subtitle>
-            你選擇了 &nbsp;
-            {selectedSeats
-              .map((seat) => seat.path)
-              .sort()
-              .join(', ')}
-            &nbsp; 座位
-          </Subtitle>
-        ) : (
-          <Subtitle>請選擇座位</Subtitle>
-        )}
-        {seatsStatus.flat().every((seat) => seat !== 2) && (
-          <div style={{ color: 'red' }}>目前沒有可販售座位</div>
-        )}
-        <TableContainer>
-          <table style={{ margin: 'auto' }}>
-            <tbody>
-              {seatsStatus.map((row, rowIndex) => (
-                <tr key={uuidv4()}>
-                  {row.map((column, columnIndex) => {
-                    if (column === 1) {
-                      return (
-                        <td key={uuidv4()}>
-                          <Seat
-                            name={humanizeCoordinate({ rowIndex, columnIndex })}
-                            size="large"
-                            selectable={false}
-                            selected={false}
-                          />
-                        </td>
-                      );
-                    }
-                    if (column === 2) {
-                      return (
-                        <td key={uuidv4()}>
-                          <Seat
-                            name={humanizeCoordinate({ rowIndex, columnIndex })}
-                            size="large"
-                            selectable
-                            selected={selectedSeats
-                              .map((seat) => seat.path)
-                              .includes(
-                                humanizeCoordinate({ rowIndex, columnIndex })
-                              )}
-                            handleClick={() => clickSeat(rowIndex, columnIndex)}
-                          />
-                        </td>
-                      );
-                    }
-                    return (
-                      <td key={uuidv4()}>
-                        <div
-                          style={{
-                            width: 50,
-                            height: 50,
-                            visibility: 'hidden'
-                          }}
-                        >
-                          {null}
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableContainer>
+        <Subtitle seatsStatus={seatsStatus} selectedSeats={selectedSeats} />
+        <Table
+          seatsStatus={seatsStatus}
+          selectedSeats={selectedSeats}
+          setSelectedSeats={setSelectedSeats}
+        />
         <Hint>
-          <Seat name="" size="small" selectable={false} selected={false} />
-          <span style={{ marginLeft: 20 }}>不可販售座位</span>
+          <Seat
+            name=""
+            size="small"
+            hide={false}
+            selectable={false}
+            selected={false}
+          />
+          <HintText>不可販售座位</HintText>
         </Hint>
         <Button disabled={selectedSeats.length === 0} onClick={handleSubmit}>
           確定
@@ -130,15 +42,22 @@ const SeatingPlan = ({
 };
 
 SeatingPlan.propTypes = {
-  selectedAuditorium: PropTypes.string.isRequired,
+  selectedAuditorium: PropTypes.string,
   seatsStatus: PropTypes.arrayOf(PropTypes.array),
-  selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedSeats: PropTypes.arrayOf(
+    PropTypes.shape({
+      humanizedCoordinate: PropTypes.string.isRequired,
+      coordinate: PropTypes.arrayOf(PropTypes.number).isRequired
+    })
+  ),
   setSelectedSeats: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired
 };
 
 SeatingPlan.defaultProps = {
-  seatsStatus: []
+  selectedAuditorium: null,
+  seatsStatus: [],
+  selectedSeats: []
 };
 
 export default SeatingPlan;

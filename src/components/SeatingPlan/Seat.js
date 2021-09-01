@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Item from './Seat.style';
 
-const Seat = ({ name, size, selectable, selected, handleClick }) => (
+const Seat = ({ name, size, hide, selectable, selected, handleSelect }) => (
   <Item
     size={size}
+    hide={hide}
     selectable={selectable}
     selected={selected}
-    onClick={handleClick}
+    onClick={handleSelect}
   >
     {name}
   </Item>
@@ -15,14 +16,15 @@ const Seat = ({ name, size, selectable, selected, handleClick }) => (
 
 Seat.propTypes = {
   name: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
+  size: PropTypes.oneOf(['large', 'small']).isRequired,
+  hide: PropTypes.bool.isRequired,
   selectable: PropTypes.bool.isRequired,
   selected: PropTypes.bool.isRequired,
-  handleClick: PropTypes.func
+  handleSelect: PropTypes.func
 };
 
 Seat.defaultProps = {
-  handleClick: () => {}
+  handleSelect: () => {}
 };
 
 export default Seat;

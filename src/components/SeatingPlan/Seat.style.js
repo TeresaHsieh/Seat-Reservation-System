@@ -18,6 +18,10 @@ const selectedMixin = css`
   color: #fff;
 `;
 
+const hideMixin = css`
+  visibility: hidden;
+`;
+
 const smallSizeMixin = css`
   width: 30px;
   height: 30px;
@@ -48,5 +52,6 @@ export default styled.div.attrs({ role: 'button' })`
   color: #fff;
   ${({ selectable }) => (selectable ? selectableMixin : disabledMixin)}
   ${({ selected }) => selected && selectedMixin}
+  ${({ hide }) => hide && hideMixin}
   ${getSizeMixin}
 `;

@@ -17,24 +17,6 @@ export const Title = styled.h1`
   margin-top: 0px;
 `;
 
-export const Subtitle = styled.h2`
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 500;
-  text-align: center;
-`;
-
-export const TableContainer = styled.div`
-  overflow-x: scroll;
-  width: 100%;
-  margin-top: 40px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 const disabledMixin = css`
   background-image: none;
   background-color: gray;
@@ -45,6 +27,10 @@ export const Hint = styled.div`
   margin-top: 20px;
   display: flex;
   align-items: center;
+`;
+
+export const HintText = styled.span`
+  margin-left: 20px;
 `;
 
 export const Button = styled.div.attrs({ role: 'button' })`
