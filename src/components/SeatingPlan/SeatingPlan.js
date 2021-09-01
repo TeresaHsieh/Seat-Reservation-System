@@ -3,23 +3,38 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import Loader from '../Loader';
 import Seat from './Seat';
-import Container from './SeatingPlan.style';
+import { Container, Button } from './SeatingPlan.style';
 
 const convertCoordinate = (rowIndex, columnIndex) =>
-  `${String.fromCharCode(rowIndex + 1 + 65)}${columnIndex + 1}`;
+  `${String.fromCharCode(rowIndex + 65)}${columnIndex + 1}`;
 
 const SeatingPlan = ({
   isLoadingData,
   seatsStatus,
   selectedSeats,
-  setSelectedSeats
+  setSelectedSeats,
+  handleSubmit
 }) => {
-  const clickSeat = (name) => {
-    if (selectedSeats.includes(name)) {
-      setSelectedSeats(selectedSeats.filter((value) => value !== name));
+  const clickSeat = (rowIndex, columnIndex) => {
+    if (
+      selectedSeats.some(
+        (element) => element.path === convertCoordinate(rowIndex, columnIndex)
+      )
+    ) {
+      setSelectedSeats(
+        selectedSeats.filter(
+          (element) => element.path !== convertCoordinate(rowIndex, columnIndex)
+        )
+      );
       return;
     }
-    setSelectedSeats([...selectedSeats, name]);
+    setSelectedSeats([
+      ...selectedSeats,
+      {
+        path: convertCoordinate(rowIndex, columnIndex),
+        coordinate: [rowIndex, columnIndex]
+      }
+    ]);
   };
 
   if (isLoadingData) {
@@ -54,12 +69,10 @@ const SeatingPlan = ({
                         <Seat
                           name={convertCoordinate(rowIndex, columnIndex)}
                           selectable
-                          selected={selectedSeats.includes(
-                            convertCoordinate(rowIndex, columnIndex)
-                          )}
-                          handleClick={() =>
-                            clickSeat(convertCoordinate(rowIndex, columnIndex))
-                          }
+                          selected={selectedSeats
+                            .map((seat) => seat.path)
+                            .includes(convertCoordinate(rowIndex, columnIndex))}
+                          handleClick={() => clickSeat(rowIndex, columnIndex)}
                         />
                       </td>
                     );
@@ -70,6 +83,9 @@ const SeatingPlan = ({
             ))}
           </tbody>
         </table>
+        <Button disabled={selectedSeats.length === 0} onClick={handleSubmit}>
+          確定
+        </Button>
       </Container>
     );
   }
@@ -80,7 +96,8 @@ SeatingPlan.propTypes = {
   isLoadingData: PropTypes.bool.isRequired,
   seatsStatus: PropTypes.arrayOf(PropTypes.array),
   selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setSelectedSeats: PropTypes.func.isRequired
+  setSelectedSeats: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
 };
 
 SeatingPlan.defaultProps = {

@@ -13,6 +13,7 @@ const App = () => {
     if (selectedAuditorium === null) {
       return;
     }
+    setSelectedSeats([]);
     setIsLoadingData(true);
     fetch(`http://localhost:8000/${selectedAuditorium}`)
       .then((response) => response.json())
@@ -21,6 +22,24 @@ const App = () => {
         setIsLoadingData(false);
       });
   }, [selectedAuditorium]);
+
+  const handleSubmit = () => {
+    const newSeatsStatus = seatsStatus;
+    for (let i = 0; i < selectedSeats.length; i += 1) {
+      const [rowIndex, columnIndex] = selectedSeats[i]?.coordinate;
+      newSeatsStatus[rowIndex][columnIndex] = 1;
+    }
+    fetch(`http://localhost:8000/${selectedAuditorium}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ seatsStatus: newSeatsStatus })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSeatsStatus(data?.seatsStatus);
+        setSelectedSeats([]);
+      });
+  };
 
   return (
     <Outer>
@@ -31,6 +50,7 @@ const App = () => {
           seatsStatus={seatsStatus}
           selectedSeats={selectedSeats}
           setSelectedSeats={setSelectedSeats}
+          handleSubmit={handleSubmit}
         />
       </Inner>
     </Outer>
