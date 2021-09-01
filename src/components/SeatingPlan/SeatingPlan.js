@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import humanizeCoordinate from '../../utils/humanizeCoordinate';
 import Seat from './Seat';
 import {
   Container,
@@ -10,9 +11,6 @@ import {
   Hint,
   Button
 } from './SeatingPlan.style';
-
-const convertCoordinate = (rowIndex, columnIndex) =>
-  `${String.fromCharCode(rowIndex + 65)}${columnIndex + 1}`;
 
 const SeatingPlan = ({
   selectedAuditorium,
@@ -24,12 +22,14 @@ const SeatingPlan = ({
   const clickSeat = (rowIndex, columnIndex) => {
     if (
       selectedSeats.some(
-        (element) => element.path === convertCoordinate(rowIndex, columnIndex)
+        (element) =>
+          element.path === humanizeCoordinate({ rowIndex, columnIndex })
       )
     ) {
       setSelectedSeats(
         selectedSeats.filter(
-          (element) => element.path !== convertCoordinate(rowIndex, columnIndex)
+          (element) =>
+            element.path !== humanizeCoordinate({ rowIndex, columnIndex })
         )
       );
       return;
@@ -37,7 +37,7 @@ const SeatingPlan = ({
     setSelectedSeats([
       ...selectedSeats,
       {
-        path: convertCoordinate(rowIndex, columnIndex),
+        path: humanizeCoordinate({ rowIndex, columnIndex }),
         coordinate: [rowIndex, columnIndex]
       }
     ]);
@@ -72,7 +72,7 @@ const SeatingPlan = ({
                       return (
                         <td key={uuidv4()}>
                           <Seat
-                            name={convertCoordinate(rowIndex, columnIndex)}
+                            name={humanizeCoordinate({ rowIndex, columnIndex })}
                             size="large"
                             selectable={false}
                             selected={false}
@@ -84,13 +84,13 @@ const SeatingPlan = ({
                       return (
                         <td key={uuidv4()}>
                           <Seat
-                            name={convertCoordinate(rowIndex, columnIndex)}
+                            name={humanizeCoordinate({ rowIndex, columnIndex })}
                             size="large"
                             selectable
                             selected={selectedSeats
                               .map((seat) => seat.path)
                               .includes(
-                                convertCoordinate(rowIndex, columnIndex)
+                                humanizeCoordinate({ rowIndex, columnIndex })
                               )}
                             handleClick={() => clickSeat(rowIndex, columnIndex)}
                           />
