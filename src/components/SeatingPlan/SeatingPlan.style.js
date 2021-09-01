@@ -15,6 +15,19 @@ export const Container = styled.div`
   position: relative;
 `;
 
+export const Title = styled.h1`
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  margin-top: 0px;
+`;
+
+export const Subtitle = styled.h2`
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+`;
+
 const disabledMixin = css`
   background-image: none;
   background-color: gray;

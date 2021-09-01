@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import Loader from '../Loader';
 import Seat from './Seat';
-import { Container, Button } from './SeatingPlan.style';
+import { Container, Title, Subtitle, Button } from './SeatingPlan.style';
 
 const convertCoordinate = (rowIndex, columnIndex) =>
   `${String.fromCharCode(rowIndex + 65)}${columnIndex + 1}`;
 
 const SeatingPlan = ({
+  selectedAuditorium,
   isLoadingData,
   seatsStatus,
   selectedSeats,
@@ -47,7 +48,20 @@ const SeatingPlan = ({
   if (seatsStatus.length > 0) {
     return (
       <Container>
-        <table>
+        <Title>{selectedAuditorium} 廳</Title>
+        {selectedSeats.length > 0 ? (
+          <Subtitle>
+            你選擇了 &nbsp;
+            {selectedSeats
+              .map((seat) => seat.path)
+              .sort()
+              .join(', ')}
+            &nbsp; 座位
+          </Subtitle>
+        ) : (
+          <Subtitle>請選擇座位</Subtitle>
+        )}
+        <table style={{ marginTop: 40 }}>
           <tbody>
             {seatsStatus.map((row, rowIndex) => (
               <tr key={uuidv4()}>
@@ -93,6 +107,7 @@ const SeatingPlan = ({
 };
 
 SeatingPlan.propTypes = {
+  selectedAuditorium: PropTypes.string.isRequired,
   isLoadingData: PropTypes.bool.isRequired,
   seatsStatus: PropTypes.arrayOf(PropTypes.array),
   selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired,

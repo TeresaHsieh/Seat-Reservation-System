@@ -46,6 +46,7 @@ const App = () => {
       <Inner>
         <Select handleClick={setSelectedAuditorium} />
         <SeatingPlan
+          selectedAuditorium={selectedAuditorium}
           isLoadingData={isLoadingData}
           seatsStatus={seatsStatus}
           selectedSeats={selectedSeats}
