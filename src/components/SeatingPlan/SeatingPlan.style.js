@@ -41,6 +41,12 @@ const disabledMixin = css`
   cursor: not-allowed;
 `;
 
+export const Hint = styled.div`
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+`;
+
 export const Button = styled.div.attrs({ role: 'button' })`
   margin-top: 60px;
   width: 80px;

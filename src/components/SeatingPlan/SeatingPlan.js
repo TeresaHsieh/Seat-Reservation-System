@@ -8,6 +8,7 @@ import {
   Title,
   Subtitle,
   TableContainer,
+  Hint,
   Button
 } from './SeatingPlan.style';
 
@@ -74,6 +75,7 @@ const SeatingPlan = ({
                         <td key={uuidv4()}>
                           <Seat
                             name={convertCoordinate(rowIndex, columnIndex)}
+                            size="large"
                             selectable={false}
                             selected={false}
                           />
@@ -85,6 +87,7 @@ const SeatingPlan = ({
                         <td key={uuidv4()}>
                           <Seat
                             name={convertCoordinate(rowIndex, columnIndex)}
+                            size="large"
                             selectable
                             selected={selectedSeats
                               .map((seat) => seat.path)
@@ -115,6 +118,10 @@ const SeatingPlan = ({
             </tbody>
           </table>
         </TableContainer>
+        <Hint>
+          <Seat name="" size="small" selectable={false} selected={false} />
+          <span style={{ marginLeft: 20 }}>不可販售座位</span>
+        </Hint>
         <Button disabled={selectedSeats.length === 0} onClick={handleSubmit}>
           確定
         </Button>
