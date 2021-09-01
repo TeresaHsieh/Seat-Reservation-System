@@ -64,6 +64,9 @@ const SeatingPlan = ({
         ) : (
           <Subtitle>請選擇座位</Subtitle>
         )}
+        {seatsStatus.flat().every((seat) => seat !== 2) && (
+          <div style={{ color: 'red' }}>目前沒有可販售座位</div>
+        )}
         <TableContainer>
           <table style={{ margin: 'auto' }}>
             <tbody>
