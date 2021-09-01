@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Select from './components/Select';
+import * as SEAT_STATUS from './constants/seatStatusCode.const';
+import Auditoriums from './components/Auditoriums';
 import SeatingPlan from './components/SeatingPlan';
+import Loader from './components/Loader';
 import { Outer, Inner } from './App.style';
 
 const App = () => {
@@ -26,8 +28,8 @@ const App = () => {
   const handleSubmit = () => {
     const newSeatsStatus = seatsStatus;
     for (let i = 0; i < selectedSeats.length; i += 1) {
-      const [rowIndex, columnIndex] = selectedSeats[i]?.coordinate;
-      newSeatsStatus[rowIndex][columnIndex] = 1;
+      const [rowIndex, columnIndex] = selectedSeats[i].coordinate;
+      newSeatsStatus[rowIndex][columnIndex] = SEAT_STATUS.UNAVAILABLE;
     }
     fetch(`http://localhost:8000/${selectedAuditorium}`, {
       method: 'POST',
@@ -44,15 +46,15 @@ const App = () => {
   return (
     <Outer>
       <Inner>
-        <Select handleClick={setSelectedAuditorium} />
+        <Auditoriums handleSelect={setSelectedAuditorium} />
         <SeatingPlan
           selectedAuditorium={selectedAuditorium}
-          isLoadingData={isLoadingData}
           seatsStatus={seatsStatus}
           selectedSeats={selectedSeats}
           setSelectedSeats={setSelectedSeats}
           handleSubmit={handleSubmit}
         />
+        <Loader visible={isLoadingData} />
       </Inner>
     </Outer>
   );

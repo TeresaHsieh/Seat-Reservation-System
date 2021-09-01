@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ClipLoader from 'react-spinners/ClipLoader';
 
@@ -13,7 +14,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
 `;
 
 const EnhancedClipLoader = styled(ClipLoader).attrs({
@@ -24,10 +24,19 @@ const EnhancedClipLoader = styled(ClipLoader).attrs({
   loading: true
 })``;
 
-const Loader = () => (
-  <Container>
-    <EnhancedClipLoader />
-  </Container>
-);
+const Loader = ({ visible }) => {
+  if (!visible) {
+    return null;
+  }
+  return (
+    <Container>
+      <EnhancedClipLoader />
+    </Container>
+  );
+};
+
+Loader.propTypes = {
+  visible: PropTypes.bool.isRequired
+};
 
 export default Loader;

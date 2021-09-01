@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import Loader from '../Loader';
 import Seat from './Seat';
 import {
   Container,
@@ -17,7 +16,6 @@ const convertCoordinate = (rowIndex, columnIndex) =>
 
 const SeatingPlan = ({
   selectedAuditorium,
-  isLoadingData,
   seatsStatus,
   selectedSeats,
   setSelectedSeats,
@@ -45,9 +43,6 @@ const SeatingPlan = ({
     ]);
   };
 
-  if (isLoadingData) {
-    return <Loader />;
-  }
   if (seatsStatus.length > 0) {
     return (
       <Container>
@@ -136,7 +131,6 @@ const SeatingPlan = ({
 
 SeatingPlan.propTypes = {
   selectedAuditorium: PropTypes.string.isRequired,
-  isLoadingData: PropTypes.bool.isRequired,
   seatsStatus: PropTypes.arrayOf(PropTypes.array),
   selectedSeats: PropTypes.arrayOf(PropTypes.string).isRequired,
   setSelectedSeats: PropTypes.func.isRequired,
