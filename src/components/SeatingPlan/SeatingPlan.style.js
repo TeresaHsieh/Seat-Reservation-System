@@ -36,10 +36,10 @@ export const HintText = styled.span`
 export const Button = styled.div.attrs({ role: 'button' })`
   margin-top: 60px;
   width: 80px;
-  height: 50px;
+  height: 40px;
   text-align: center;
   vertical-align: middle;
-  line-height: 50px;
+  line-height: 40px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   color: #fff;
