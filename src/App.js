@@ -8,7 +8,7 @@ import { Outer, Inner } from './App.style';
 const App = () => {
   const [selectedAuditorium, setSelectedAuditorium] = useState(null);
   const [seatsStatus, setSeatsStatus] = useState([]);
-  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedSeats, setSelectedSeats] = useState([]);
 
   useEffect(() => {
@@ -16,12 +16,12 @@ const App = () => {
       return;
     }
     setSelectedSeats([]);
-    setIsLoadingData(true);
+    setIsLoading(true);
     fetch(`http://localhost:8000/${selectedAuditorium}`)
       .then((response) => response.json())
       .then((data) => {
         setSeatsStatus(data?.seatsStatus);
-        setIsLoadingData(false);
+        setIsLoading(false);
       });
   }, [selectedAuditorium]);
 
@@ -31,6 +31,7 @@ const App = () => {
       const [rowIndex, columnIndex] = selectedSeats[i].coordinate;
       newSeatsStatus[rowIndex][columnIndex] = SEAT_STATUS.UNAVAILABLE;
     }
+    setIsLoading(true);
     fetch(`http://localhost:8000/${selectedAuditorium}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,6 +40,7 @@ const App = () => {
       .then((response) => response.json())
       .then((data) => {
         setSeatsStatus(data?.seatsStatus);
+        setIsLoading(false);
         setSelectedSeats([]);
       });
   };
@@ -54,7 +56,7 @@ const App = () => {
           setSelectedSeats={setSelectedSeats}
           handleSubmit={handleSubmit}
         />
-        <Loader visible={isLoadingData} />
+        <Loader visible={isLoading} />
       </Inner>
     </Outer>
   );
