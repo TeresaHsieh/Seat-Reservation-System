@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import Loader from '../Loader';
 import Seat from './Seat';
-import { Container, Title, Subtitle, Button } from './SeatingPlan.style';
+import {
+  Container,
+  Title,
+  Subtitle,
+  TableContainer,
+  Button
+} from './SeatingPlan.style';
 
 const convertCoordinate = (rowIndex, columnIndex) =>
   `${String.fromCharCode(rowIndex + 65)}${columnIndex + 1}`;
@@ -39,11 +45,7 @@ const SeatingPlan = ({
   };
 
   if (isLoadingData) {
-    return (
-      <Container>
-        <Loader />
-      </Container>
-    );
+    return <Loader />;
   }
   if (seatsStatus.length > 0) {
     return (
@@ -61,42 +63,58 @@ const SeatingPlan = ({
         ) : (
           <Subtitle>請選擇座位</Subtitle>
         )}
-        <table style={{ marginTop: 40 }}>
-          <tbody>
-            {seatsStatus.map((row, rowIndex) => (
-              <tr key={uuidv4()}>
-                {row.map((column, columnIndex) => {
-                  if (column === 1) {
+        <TableContainer>
+          <table style={{ margin: 'auto' }}>
+            <tbody>
+              {seatsStatus.map((row, rowIndex) => (
+                <tr key={uuidv4()}>
+                  {row.map((column, columnIndex) => {
+                    if (column === 1) {
+                      return (
+                        <td key={uuidv4()}>
+                          <Seat
+                            name={convertCoordinate(rowIndex, columnIndex)}
+                            selectable={false}
+                            selected={false}
+                          />
+                        </td>
+                      );
+                    }
+                    if (column === 2) {
+                      return (
+                        <td key={uuidv4()}>
+                          <Seat
+                            name={convertCoordinate(rowIndex, columnIndex)}
+                            selectable
+                            selected={selectedSeats
+                              .map((seat) => seat.path)
+                              .includes(
+                                convertCoordinate(rowIndex, columnIndex)
+                              )}
+                            handleClick={() => clickSeat(rowIndex, columnIndex)}
+                          />
+                        </td>
+                      );
+                    }
                     return (
                       <td key={uuidv4()}>
-                        <Seat
-                          name={convertCoordinate(rowIndex, columnIndex)}
-                          selectable={false}
-                          selected={false}
-                        />
+                        <div
+                          style={{
+                            width: 50,
+                            height: 50,
+                            visibility: 'hidden'
+                          }}
+                        >
+                          {null}
+                        </div>
                       </td>
                     );
-                  }
-                  if (column === 2) {
-                    return (
-                      <td key={uuidv4()}>
-                        <Seat
-                          name={convertCoordinate(rowIndex, columnIndex)}
-                          selectable
-                          selected={selectedSeats
-                            .map((seat) => seat.path)
-                            .includes(convertCoordinate(rowIndex, columnIndex))}
-                          handleClick={() => clickSeat(rowIndex, columnIndex)}
-                        />
-                      </td>
-                    );
-                  }
-                  return <td key={uuidv4()}>{null}</td>;
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </TableContainer>
         <Button disabled={selectedSeats.length === 0} onClick={handleSubmit}>
           確定
         </Button>

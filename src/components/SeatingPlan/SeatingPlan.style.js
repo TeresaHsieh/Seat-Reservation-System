@@ -1,18 +1,13 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  width: -webkit-fill-available;
-  height: 600px;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: calc(100% - 220px);
+  min-height: 600px;
   margin-left: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
 `;
 
 export const Title = styled.h1`
@@ -26,6 +21,18 @@ export const Subtitle = styled.h2`
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
+  text-align: center;
+`;
+
+export const TableContainer = styled.div`
+  overflow-x: scroll;
+  width: 100%;
+  margin-top: 40px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const disabledMixin = css`
@@ -35,7 +42,7 @@ const disabledMixin = css`
 `;
 
 export const Button = styled.div.attrs({ role: 'button' })`
-  margin-top: 100px;
+  margin-top: 60px;
   width: 80px;
   height: 50px;
   text-align: center;

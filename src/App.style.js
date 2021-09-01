@@ -12,4 +12,5 @@ export const Inner = styled.div`
   margin: 0 auto;
   display: flex;
   align-items: center;
+  position: relative;
 `;
