@@ -42,3 +42,33 @@ yarn start:jsonserver
 - react-modal：快速產生 modal，提供非預期錯誤、成功訂位訊息給 users
 - eslint：用於檢查 coding style，在此專案中使用了 Airbnb 的規範，也依照文件彈性自訂喜歡的規則
 - prettier：用於格式化 code，方便在開發時，有習慣的排版，提高 code 的閱讀性
+
+## 執行畫面
+
+### 初始畫面
+
+![](https://i.imgur.com/tUZZEGY.png)
+
+### 選擇座位表
+
+![](https://i.imgur.com/9j8J15s.png)
+
+### 切換座位表
+
+![](https://i.imgur.com/7iwzVfs.png)
+
+### 選擇座位
+
+![](https://i.imgur.com/fWWhZ0v.png)
+
+### 訂位成功
+
+![](https://i.imgur.com/4zCLfXw.png)
+
+### 已成功訂位的座位不開放選取
+
+![](https://i.imgur.com/xoEAvee.png)
+
+### 非預期錯誤提醒
+
+![](https://i.imgur.com/b6K9K1y.png)
