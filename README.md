@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# Seat Reservation System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+提供不同排列的座位表，讓 users 可以選擇喜歡的座位並訂位
 
-## Available Scripts
+## 安裝與執行
 
-In the project directory, you can run:
+Step1. Install Dependencies
 
-### `yarn start`
+```
+yarn
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Step2. run 專案於 localhost:8080
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+yarn start
+```
 
-### `yarn test`
+Step3. run json-server 於 port 8000，提供座位表資料的 GET 與 POST
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+yarn start:jsonserver
+```
 
-### `yarn build`
+## 專案架構
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+專案 src 架構主要分為三個部分：
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- components：依照自己設計的 UI，將畫面切割分為選廳的 Auditoriums 與選座位的 SeatingPlan。也 apply 了 Loader 與 Modal，來呈現 loading 與 success、error 狀態
+- constants：因為座位有三種狀態「不存在的位置」、「不可販售座位」、「可選擇的座位」，所以用了 constant 定義狀態，也方便未來做新增、刪除
+- utils：由於位置的 UI 座標與記錄在 DB 裡資料是使用不同格式，因此 apply 一個 humanizeCoordinate 的 util 來轉換格式
+- data：放置座位表的假資料，模擬 GET 資料時，會得到的座位 JSON data
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 使用的 Dependencies、DevDependencies
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- react：使用 Create React App 來快速建立專案
+- prop-types：爲 props 進行型別檢查，確保傳入的 value 型別一致
+- styled-components：使用 CSS in JS 的設計方法，將 style 元件化
+- json-server：快速建立虛擬的 db，模擬開發中真實發 GET、POST request 的情境
+- uuid：使用 uuid 產生不易重複的亂碼，讓在 map 元件時，可以不使用 index 來作為 key
+- react-spinners：快速產生 spinner 動畫，提供 loading 狀態時，能反應載入的狀態給 users
+- react-modal：快速產生 modal，提供非預期錯誤、成功訂位訊息給 users
+- eslint：用於檢查 coding style，在此專案中使用了 Airbnb 的規範，也依照文件彈性自訂喜歡的規則
+- prettier：用於格式化 code，方便在開發時，有習慣的排版，提高 code 的閱讀性
